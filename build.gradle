@@ -2,14 +2,13 @@ plugins {
 	id 'java'
 }
 
-archivesBaseName = 'ustra-scanner-java'
+archivesBaseName = 'ustra-u2l-scanner'
 group = 'com.gsitm.ustra'
-version = '0.1.9'
+version = '1.0.0'
 sourceCompatibility = '1.6'
 
 repositories {
-	// mavenCentral()
-	maven { url "https://nexus.ehyundai.com/repository/maven-public/" }
+	mavenCentral()
 }
 
 dependencies {
@@ -41,8 +40,8 @@ compileJava {
     options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
 }
 
-def mainClassName = 'com.gsitm.ustra.java.autotool.Application'
-def version = '1.0'
+def mainClassName = 'com.gsitm.ustra.u2l.scanner.Application'
+// def version = '1.0'
 
 jar {
     manifest {
