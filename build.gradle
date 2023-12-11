@@ -1,0 +1,60 @@
+plugins {
+	id 'java'
+}
+
+archivesBaseName = 'ustra-scanner-java'
+group = 'com.gsitm.ustra'
+version = '0.1.9'
+sourceCompatibility = '1.6'
+
+repositories {
+	// mavenCentral()
+	maven { url "https://nexus.ehyundai.com/repository/maven-public/" }
+}
+
+dependencies {
+	compile 'info.picocli:picocli:4.7.1'
+	annotationProcessor 'info.picocli:picocli-codegen:4.7.1'
+
+	compile 'commons-lang:commons-lang:2.6'
+	compile 'commons-io:commons-io:2.5'
+
+	annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+
+
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+    testCompileOnly 'org.projectlombok:lombok:1.18.26'
+
+    // implementation 'org.apache.logging.log4j:log4j-core:2.3.2'
+	compile 'org.slf4j:slf4j-api:1.6.6'
+	compile 'org.slf4j:slf4j-simple:1.6.6'
+	compile 'org.apache.ant:ant:1.9.16'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+compileJava {
+    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
+}
+
+def mainClassName = 'com.gsitm.ustra.java.autotool.Application'
+def version = '1.0'
+
+jar {
+    manifest {
+        attributes 'Version': version, 'Main-Class': mainClassName
+    }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
