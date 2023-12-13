@@ -1,6 +1,6 @@
 # U2L SCANNER
 
-U2L 프로젝트에서 사용된 코드 스캐닝 기능은 GitHub를 통해서 서비스 되고 있으며 아래 링크를 방문하여 소스 코드 및 Relase 된 바이너리 파일을 다운로드 받을 수 있다.
+U2L 프로젝트에서 사용된 코드 스캐닝 기능은 GitHub를 통해서 서비스 되고 있으며 아래 링크를 방문하여 소스 코드 및 Release 된 바이너리 파일을 다운로드 받을 수 있다.
 
 - [https://github.com/ustraframework/u2l-scanner](https://github.com/ustraframework/u2l-scanner)
 
