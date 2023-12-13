@@ -48,6 +48,10 @@ public class Middleware {
 
 		}
 
+		if (contextData.getExcludeSymlink()&& CommonFileUtils.isSymlink(pathname)) {
+			return true;
+		}
+
 
 		String name = FilenameUtils.getName(pathname.toString());
 

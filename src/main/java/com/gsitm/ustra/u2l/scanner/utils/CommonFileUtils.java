@@ -7,19 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.tools.ant.DirectoryScanner;
 
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @UtilityClass
 public class CommonFileUtils {
 
 	/**
 	 * 디렉토리 탐색
+	 *
 	 * @param path
 	 * @param filter
 	 */
@@ -39,7 +37,7 @@ public class CommonFileUtils {
 			return;
 		}
 
-		for(int i=0; i < listFiles.length; i++) {
+		for (int i = 0; i < listFiles.length; i++) {
 			boolean result = filter.accept(listFiles[i]);
 
 			if (result) {
@@ -51,6 +49,7 @@ public class CommonFileUtils {
 
 	/**
 	 * 디렉토리의 파일을 pattern으로 검색
+	 *
 	 * @param targetDirPath
 	 * @param pattern
 	 * @return
@@ -70,28 +69,28 @@ public class CommonFileUtils {
 			String[] matches = ds.getIncludedFiles();
 			List<File> files = new ArrayList<File>(matches.length);
 
-			for(int i=0; i < matches.length; i++) {
+			for (int i = 0; i < matches.length; i++) {
 				files.add(new File(join(new File(targetDirPath), matches[i])));
 			}
 
 			return files;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return new ArrayList<File>();
 		}
 	}
 
-
-	public String join(File file, String...paths) {
+	public String join(File file, String... paths) {
 		String path = file.getPath();
 
-		for(String p : paths) {
-			path += (SystemUtils.IS_OS_WINDOWS ? "\\" : "/") + p.replaceAll("/", SystemUtils.IS_OS_WINDOWS ? "\\" : "/");
+		for (String p : paths) {
+			path += (SystemUtils.IS_OS_WINDOWS ? "\\" : "/")
+					+ p.replaceAll("/", SystemUtils.IS_OS_WINDOWS ? "\\" : "/");
 		}
 
 		return path;
 	}
 
-	public String join(String file, String...paths) {
+	public String join(String file, String... paths) {
 		return join(new File(file), paths);
 	}
 
@@ -103,7 +102,7 @@ public class CommonFileUtils {
 
 		String[] matches = ds.getIncludedDirectories();
 
-		for(String path : matches) {
+		for (String path : matches) {
 			if (new File(join(new File(targetDirPath), path)).exists()) {
 				try {
 					FileUtils.deleteDirectory(new File(join(new File(targetDirPath), path)));
@@ -115,16 +114,33 @@ public class CommonFileUtils {
 	}
 
 	public void removeCompressFiles(String targetDirPath) {
-		for(File file : scanFile(targetDirPath, "**/*.tar", "**/*.tar.gz", "**/*.zip")) {
+		for (File file : scanFile(targetDirPath, "**/*.tar", "**/*.tar.gz", "**/*.zip")) {
 			file.delete();
 		}
 	}
 
 	public void removeLogFiles(String targetDirPath) {
-		for(File file : scanFile(targetDirPath, "**/*.log", "**/*log/**", "**/*LOG/**")) {
+		for (File file : scanFile(targetDirPath, "**/*.log", "**/*log/**", "**/*LOG/**")) {
 			file.delete();
 		}
 	}
 
+	public static boolean isSymlink(File file) {
+
+		try {
+			if (file == null)
+				throw new NullPointerException("File must not be null");
+			File canon;
+			if (file.getParent() == null) {
+				canon = file;
+			} else {
+				File canonDir = file.getParentFile().getCanonicalFile();
+				canon = new File(canonDir, file.getName());
+			}
+			return !canon.getCanonicalFile().equals(canon.getAbsoluteFile());
+		} catch(Exception e) {
+			return false;
+		}
+	}
 
 }

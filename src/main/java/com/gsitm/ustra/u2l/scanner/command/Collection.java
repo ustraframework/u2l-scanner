@@ -25,6 +25,9 @@ public class Collection implements Runnable {
 	@Option(names = {"-e", "--excludePath"}, description = "excludePath", split = ",")
     private String[] excludePath = new String[] {};
 
+	@Option(names = {"-s", "--excludeSymlink"}, description = "excludeSymbolicLink")
+    private boolean excludeSymlink = false;
+
     @Override
     public void run() {
 
@@ -34,9 +37,11 @@ public class Collection implements Runnable {
     		ContextData contextData = CommandContextHolder.get();
     		contextData.setRootPaths(this.rootPath);
     		contextData.setExcludePaths(this.excludePath);
+    		contextData.setExcludeSymlink(this.excludeSymlink);
 
     		log.info("rootPath : {}", this.rootPath);
     		log.info("excludePath : {}/{}", this.excludePath.length, this.excludePath);
+    		log.info("excludeSymlink : {}", this.excludeSymlink);
 
 			ServerEnv.collect(contextData);
 			Middleware.collect(contextData);

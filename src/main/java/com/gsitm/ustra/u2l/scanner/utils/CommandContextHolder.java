@@ -58,6 +58,7 @@ public class CommandContextHolder {
 		private String[] rootPaths;
 		private String rootPath;
 		private String[] excludePaths;
+		private Boolean excludeSymlink;
 	}
 
 }
